@@ -1,0 +1,19 @@
+settings:
+  - name: constraints
+    type: string
+    value:
+      - node.platform.os == linux
+  - name: Resources
+    type: Resources
+    value:
+      # 1 CPU and 4 Gb: temporary before we learn more about the service usage
+      Limits:
+        NanoCPUs: 1000000000 # 1 CPU
+        MemoryBytes: 4000000000 # 4 GB
+      Reservations:
+        NanoCPUs: 1000000000 # 1 CPU
+        MemoryBytes: 4000000000 # 4 GB
+        # GenericResources:
+        #   - DiscreteResourceSpec:
+        #       Kind: VRAM
+        #       Value: 1
