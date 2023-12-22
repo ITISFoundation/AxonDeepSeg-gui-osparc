@@ -60,7 +60,8 @@ Perform a test segmentation as shown in this [video tutorial](https://youtu.be/z
 
 ## Changelog
 
-### [1.0.0] - 2023-12-22
+
+### [1.0.1] - 2023-12-22
 First version
 
 
