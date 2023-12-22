@@ -1,5 +1,5 @@
 name: "AxonDeepSeg GUI-web"
-thumbnail: https://github.com/axondeepseg/axondeepseg/blob/master/docs/source/_static/logo_ads-alpha.png?raw=true
+thumbnail: https://i.ytimg.com/vi/zibDbpko6ko/maxresdefault.jpg
 description: "AxonDeepSeg GUI"
 key: simcore/services/dynamic/axondeepseg-gui-web
 version: 1.0.0

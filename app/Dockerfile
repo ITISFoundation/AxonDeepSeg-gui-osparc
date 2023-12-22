@@ -62,6 +62,7 @@ ARG PATH="/opt/miniconda3/bin:${PATH}"
 
 ENV CONDA_DIR=/opt/miniconda3/
 
+# This are libraries needed for napari
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     curl  \
@@ -97,31 +98,15 @@ RUN git clone https://github.com/neuropoly/axondeepseg.git && \
 SHELL ["conda", "run", "-n", "ads_venv", "/bin/bash", "-c" ]
 
 RUN  cd axondeepseg && \
-     conda install -c conda-forge  xpra && \
+     #conda install -c conda-forge  xpra && \
      pip install -e . plugins/ && \
      axondeepseg_test && \
      py.test --cov AxonDeepSeg/ --cov-report term-missing
 
-RUN apt-get update && apt-get install -y wget gnupg2 apt-transport-https \
-    software-properties-common ca-certificates && \
-    wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc && \
-    wget -O "/etc/apt/sources.list.d/xpra.sources" https://xpra.org/repos/focal/xpra.sources
-
-RUN  apt-get update && \
-    apt-get install -yqq \
-        xpra \
-        xvfb \
-        xterm \
-        sshfs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 
 ENV DISPLAY=:0
 ENV XPRA_PORT=9876
-ENV XPRA_START="python3 -m napari"
-ENV XPRA_EXIT_WITH_CLIENT="yes"
-ENV XPRA_XVFB_SCREEN="1920x1080x24+32"
 EXPOSE 9876
 
 # Activate the conda env at startup
@@ -131,7 +116,11 @@ RUN echo "source $CONDA_DIR/bin/activate ads_venv" >> ~/.bashrc
 COPY config/menu.xml /etc/xdg/openbox/
 COPY config/supervisord.conf /etc/
 
+# Overwrite openbox config to start full screen
+COPY config/rc.xml /etc/xdg/openbox/rc.xml
 ## working directory and permissions
+
+RUN
 WORKDIR /home/scu/work
 COPY docker/ /docker
 
