@@ -60,5 +60,11 @@ Perform a test segmentation as shown in this [video tutorial](https://youtu.be/z
 
 ## Changelog
 
-### [1.0.0] - 2023-12-22
+
+### [1.0.1] - 2023-12-22
 First version
+
+
+## Benchmarks
+Segmenting `Cut_900um_900um_Clean_Clahe` image with mouse axon tem model takes:
+- on master deployment, 32 GB RAM, 6 CPUs: 8-9 minutes

@@ -6,13 +6,13 @@ settings:
   - name: Resources
     type: Resources
     value:
-      # 32 CPU and 32 Gb: by observing resource usage locally with a test image from ACA
+      # 4 CPU and 32 Gb: by observing resource usage locally with a test image from ACA. It takes 8-9 minues
       Limits:
-        NanoCPUs: 32000000000 # 1 CPU
-        MemoryBytes: 32000000000 # 16 GB
+        NanoCPUs: 4000000000 # 1 CPU
+        MemoryBytes: 32000000000 # 32 GB
       Reservations:
-        NanoCPUs: 1000000000 # 1 CPU
-        MemoryBytes: 4000000000 # 4 GB
+        NanoCPUs: 4000000000 # 1 CPU
+        MemoryBytes: 32000000000 # 32 GB
         # GenericResources:
         #   - DiscreteResourceSpec:
         #       Kind: VRAM
