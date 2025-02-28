@@ -31,7 +31,11 @@ RUN mkdir -p /usr/share/novnc && \
 
 COPY config/index.html /usr/share/novnc
 
-RUN cd /usr/share/novnc/utils && git clone https://github.com/novnc/websockify websockify
+# v0.13.0
+RUN cd /usr/share/novnc/utils &&\ 
+    git clone https://github.com/novnc/websockify websockify &&\ 
+    cd websockify && \
+    git checkout e81894751365afc19fe64fc9d0e5c6fc52655c36
 
 RUN mkdir -p /tmp/.X11-unix
 RUN chmod 1777 /tmp/.X11-unix
@@ -52,65 +56,44 @@ ENV LANG=C.UTF-8
 
 FROM base AS production
 
-
-# Install AxonDeepSec from doc instructions, via miniconda: https://axondeepseg.readthedocs.io/en/latest/documentation.html#installation
 WORKDIR $HOME
-
-# Change path to include conda commands
-ENV PATH="/opt/miniconda3/bin:${PATH}"
-ARG PATH="/opt/miniconda3/bin:${PATH}"
-
-ENV CONDA_DIR=/opt/miniconda3/
 
 # This are libraries needed for napari
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
+    build-essential \
     curl  \
-    mesa-utils \
+    libdbus-1-3 \
+    libfontconfig1 \
     libgl1-mesa-glx \
     libglib2.0-0 \
-    libfontconfig1 \
-    libxrender1 \
-    libdbus-1-3 \
-    libxkbcommon-x11-0 \
-    libxi6 \
     libxcb-icccm4 \
     libxcb-image0 \
     libxcb-keysyms1 \
     libxcb-randr0 \
     libxcb-render-util0 \
+    libxcb-shape0  \
+    libxcb-xfixes0 \
     libxcb-xinerama0 \
     libxcb-xinput0 \
-    libxcb-xfixes0 \
-    libxcb-shape0 && \
+    libxi6 \
+    libxkbcommon-x11-0 \
+    libxrender1 \
+    mesa-utils &&\
     rm -rf /var/lib/apt/lists
 
-RUN curl \
-    https://repo.anaconda.com/miniconda/Miniconda3-py38_23.10.0-1-Linux-x86_64.sh -o miniconda.sh && \
-    bash miniconda.sh -b -p ${CONDA_DIR} \
-    && rm -f Miniconda3-latest-Linux-x86_64.sh
-
+# v5.0.1
 RUN git clone https://github.com/neuropoly/axondeepseg.git && \
-     cd axondeepseg && \
-     conda init bash && \
-     conda env create
-     
-SHELL ["conda", "run", "-n", "ads_venv", "/bin/bash", "-c" ]
+    cd axondeepseg && \
+    git checkout ccd48b1e9d4738c9f30fe5a1a93e4f283460a3b8 &&\
+    ./install_ads -y
 
-RUN  cd axondeepseg && \
-     #conda install -c conda-forge  xpra && \
-     pip install -e . plugins/ && \
-     axondeepseg_test && \
-     py.test --cov AxonDeepSeg/ --cov-report term-missing
-
-
+WORKDIR /home/scu/work
 
 ENV DISPLAY=:0
 ENV XPRA_PORT=9876
 EXPOSE 9876
 
-# Activate the conda env at startup
-RUN echo "source $CONDA_DIR/bin/activate ads_venv" >> ~/.bashrc
 
 # -----------------------------------
 COPY config/menu.xml /etc/xdg/openbox/
@@ -120,8 +103,6 @@ COPY config/supervisord.conf /etc/
 COPY config/rc.xml /etc/xdg/openbox/rc.xml
 ## working directory and permissions
 
-RUN
-WORKDIR /home/scu/work
 COPY docker/ /docker
 
 CMD ["sh", "-c", "/docker/boot.sh"]
