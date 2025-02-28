@@ -106,7 +106,3 @@ COPY config/rc.xml /etc/xdg/openbox/rc.xml
 COPY docker/ /docker
 
 CMD ["sh", "-c", "/docker/boot.sh"]
-
-
-# source /root/.bashrc
-# ads_napari
