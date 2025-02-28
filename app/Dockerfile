@@ -56,15 +56,7 @@ ENV LANG=C.UTF-8
 
 FROM base AS production
 
-
-# Install AxonDeepSec from doc instructions, via miniconda: https://axondeepseg.readthedocs.io/en/latest/documentation.html#installation
 WORKDIR $HOME
-
-# Change path to include conda commands
-ENV PATH="/opt/miniconda3/bin:${PATH}"
-ARG PATH="/opt/miniconda3/bin:${PATH}"
-
-ENV CONDA_DIR=/opt/miniconda3/
 
 # This are libraries needed for napari
 RUN apt-get update -y && \
@@ -91,26 +83,17 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists
 
 # v5.0.1
-RUN curl \
-    https://repo.anaconda.com/miniconda/Miniconda3-py38_23.10.0-1-Linux-x86_64.sh -o miniconda.sh && \
-    bash miniconda.sh -b -p ${CONDA_DIR} \
-    && rm -f Miniconda3-latest-Linux-x86_64.sh
-
 RUN git clone https://github.com/neuropoly/axondeepseg.git && \
     cd axondeepseg && \
     git checkout ccd48b1e9d4738c9f30fe5a1a93e4f283460a3b8 &&\
     ./install_ads -y
 
-SHELL ["conda", "run", "-n", "venv_ads", "/bin/bash", "-c" ]
-
+WORKDIR /home/scu/work
 
 ENV DISPLAY=:0
 ENV XPRA_PORT=9876
 EXPOSE 9876
 
-# Activate the conda env at startup
-
-#RUN echo "source ${CONDA_DIR}envs/venv_ads/bin/activate venv_ads" >> ~/.bashrc
 
 # -----------------------------------
 COPY config/menu.xml /etc/xdg/openbox/
@@ -120,7 +103,10 @@ COPY config/supervisord.conf /etc/
 COPY config/rc.xml /etc/xdg/openbox/rc.xml
 ## working directory and permissions
 
-WORKDIR /home/scu/work
 COPY docker/ /docker
 
 CMD ["sh", "-c", "/docker/boot.sh"]
+
+
+# source /root/.bashrc
+# ads_napari
