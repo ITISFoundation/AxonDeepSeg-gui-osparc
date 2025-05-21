@@ -2,7 +2,7 @@
 SHELL = /bin/sh
 .DEFAULT_GOAL := help
 
-DOCKER_IMAGE_TAG ?= 1.0.1
+DOCKER_IMAGE_TAG ?= 1.0.2
 
 export SERVICE_NAME=axondeepseg-gui
 export APP_NAME=${SERVICE_NAME}-app
