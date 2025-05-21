@@ -13,7 +13,3 @@ settings:
       Reservations:
         NanoCPUs: 4000000000 # 1 CPU
         MemoryBytes: 32000000000 # 32 GB
-        # GenericResources:
-        #   - DiscreteResourceSpec:
-        #       Kind: VRAM
-        #       Value: 1
