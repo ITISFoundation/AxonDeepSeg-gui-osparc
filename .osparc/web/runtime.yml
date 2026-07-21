@@ -28,8 +28,8 @@ compose-spec:
   version: "3.7"
   services:
     "axondeepseg-gui-web":
-      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/axondeepseg-gui-web:$${SERVICE_VERSION}
+      image: $$$${SIMCORE_REGISTRY}/simcore/services/dynamic/axondeepseg-gui-web:$$$${SERVICE_VERSION}
 
     "axondeepseg-gui-app":
-      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/axondeepseg-gui-app:$${SERVICE_VERSION}
+      image: $$$${SIMCORE_REGISTRY}/simcore/services/dynamic/axondeepseg-gui-app:$$$${SERVICE_VERSION}
 container-http-entrypoint: "axondeepseg-gui-web"

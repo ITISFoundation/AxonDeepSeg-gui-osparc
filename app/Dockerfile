@@ -82,6 +82,11 @@ RUN apt-get update -y && \
     mesa-utils &&\
     rm -rf /var/lib/apt/lists
 
+
+ENV CONDA_PLUGINS_AUTO_ACCEPT_TOS=true
+RUN echo "PyQt6<6.10" > /etc/pip-constraints.txt
+ENV PIP_CONSTRAINT=/etc/pip-constraints.txt
+
 # v5.0.1
 RUN git clone https://github.com/neuropoly/axondeepseg.git && \
     cd axondeepseg && \
